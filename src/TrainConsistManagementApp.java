@@ -1,74 +1,36 @@
 import java.util.*;
 
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-// Goods Bogie Class
-class GoodsBogie {
-    String shape;
-    String cargo;
-
-    GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    public void assignCargo(String cargo) {
-        try {
-            if (shape.equalsIgnoreCase("Rectangular") &&
-                    cargo.equalsIgnoreCase("Petroleum")) {
-                throw new CargoSafetyException(
-                        "Unsafe cargo assignment: Petroleum cannot be assigned to Rectangular bogie");
-            }
-
-            this.cargo = cargo;
-            System.out.println("Cargo assigned: " + cargo + " to " + shape + " bogie");
-
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-            throw e; // 🔥 important
-        } finally {
-            System.out.println("Assignment attempt completed for " + shape + " bogie\n");
-        }
-    }
-
-    public String toString() {
-        return shape + " | Cargo: " + (cargo == null ? "None" : cargo);
-    }
-}
-
-// Main Class
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        List<GoodsBogie> bogies = new ArrayList<>();
+        // 🔹 Test Case 1: Basic Alphabetical Sorting
+        String[] tc1 = {"Sleeper","AC Chair","First Class","General","Luxury"};
+        sortAndPrint("Test 1 - Basic", tc1);
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        // 🔹 Test Case 2: Unsorted Input
+        String[] tc2 = {"Luxury","General","Sleeper","AC Chair"};
+        sortAndPrint("Test 2 - Unsorted", tc2);
 
-        bogies.add(b1);
-        bogies.add(b2);
+        // 🔹 Test Case 3: Already Sorted
+        String[] tc3 = {"AC Chair","First Class","General"};
+        sortAndPrint("Test 3 - Already Sorted", tc3);
 
-        // ✅ Safe assignment
-        try {
-            b1.assignCargo("Petroleum");
-        } catch (CargoSafetyException e) {}
+        // 🔹 Test Case 4: Duplicate Names
+        String[] tc4 = {"Sleeper","AC Chair","Sleeper","General"};
+        sortAndPrint("Test 4 - Duplicates", tc4);
 
-        // ❌ Unsafe assignment
-        try {
-            b2.assignCargo("Petroleum");
-        } catch (CargoSafetyException e) {}
+        // 🔹 Test Case 5: Single Element
+        String[] tc5 = {"Sleeper"};
+        sortAndPrint("Test 5 - Single Element", tc5);
+    }
 
-        // ✅ Program continues
-        try {
-            b2.assignCargo("Coal");
-        } catch (CargoSafetyException e) {}
+    // 🔥 Reusable method
+    public static void sortAndPrint(String label, String[] arr) {
+        System.out.println("\n" + label + " (Before): " + Arrays.toString(arr));
 
-        System.out.println("\nFinal Bogie Status:");
-        bogies.forEach(System.out::println);
+        Arrays.sort(arr); // ✅ core logic
+
+        System.out.println(label + " (After):  " + Arrays.toString(arr));
     }
 }
