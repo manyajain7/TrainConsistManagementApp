@@ -18,18 +18,18 @@ class GoodsBogie {
 
     public void assignCargo(String cargo) {
         try {
-            // Unsafe condition
             if (shape.equalsIgnoreCase("Rectangular") &&
                     cargo.equalsIgnoreCase("Petroleum")) {
-                throw new CargoSafetyException("Unsafe cargo assignment: Petroleum cannot be assigned to Rectangular bogie");
+                throw new CargoSafetyException(
+                        "Unsafe cargo assignment: Petroleum cannot be assigned to Rectangular bogie");
             }
 
-            // Safe assignment
             this.cargo = cargo;
             System.out.println("Cargo assigned: " + cargo + " to " + shape + " bogie");
 
         } catch (CargoSafetyException e) {
             System.out.println("Error: " + e.getMessage());
+            throw e; // 🔥 important
         } finally {
             System.out.println("Assignment attempt completed for " + shape + " bogie\n");
         }
@@ -54,13 +54,19 @@ public class TrainConsistManagementApp {
         bogies.add(b2);
 
         // ✅ Safe assignment
-        b1.assignCargo("Petroleum");
+        try {
+            b1.assignCargo("Petroleum");
+        } catch (CargoSafetyException e) {}
 
-        // ❌ Unsafe assignment (handled, no crash)
-        b2.assignCargo("Petroleum");
+        // ❌ Unsafe assignment
+        try {
+            b2.assignCargo("Petroleum");
+        } catch (CargoSafetyException e) {}
 
         // ✅ Program continues
-        b2.assignCargo("Coal");
+        try {
+            b2.assignCargo("Coal");
+        } catch (CargoSafetyException e) {}
 
         System.out.println("\nFinal Bogie Status:");
         bogies.forEach(System.out::println);
