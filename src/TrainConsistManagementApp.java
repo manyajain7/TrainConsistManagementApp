@@ -10,6 +10,10 @@ class Bogie {
         this.capacity = capacity;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String toString() {
         return type + " | Capacity: " + capacity;
     }
@@ -30,13 +34,16 @@ public class TrainConsistManagementApp {
         System.out.println("Original Bogies:");
         bogies.forEach(System.out::println);
 
-        // UC8: Stream Filtering (capacity > 60)
-        List<Bogie> filteredBogies = bogies
+        // UC9: Grouping by type
+        Map<String, List<Bogie>> groupedBogies = bogies
                 .stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Bogie::getType));
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        filteredBogies.forEach(System.out::println);
+        System.out.println("\nGrouped Bogies:");
+
+        groupedBogies.forEach((type, list) -> {
+            System.out.println("\n" + type + ":");
+            list.forEach(System.out::println);
+        });
     }
 }
