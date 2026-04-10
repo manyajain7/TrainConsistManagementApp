@@ -4,35 +4,46 @@ public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        // 🔹 Test Case Array
-        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
+        // 🔹 Unsorted input (will be sorted first)
+        String[] bogieIds = {"BG309","BG101","BG550","BG205","BG412"};
 
-        // 🔹 Test Cases
-        testSearch("Test 1 - Found", bogieIds, "BG309");
-        testSearch("Test 2 - Not Found", bogieIds, "BG999");
-        testSearch("Test 3 - First Element", bogieIds, "BG101");
-        testSearch("Test 4 - Last Element", bogieIds, "BG550");
+        // 🔹 Search key
+        String key = "BG205";
 
-        // 🔹 Single Element Case
-        String[] single = {"BG101"};
-        testSearch("Test 5 - Single Element", single, "BG101");
+        // ✅ Step 1: Sort array (IMPORTANT)
+        Arrays.sort(bogieIds);
+
+        boolean found = binarySearch(bogieIds, key);
+
+        // Output
+        if (found) {
+            System.out.println("Bogie ID " + key + " found.");
+        } else {
+            System.out.println("Bogie ID " + key + " not found.");
+        }
     }
 
-    // 🔥 Linear Search Method
-    public static boolean linearSearch(String[] arr, String key) {
+    // 🔥 Binary Search Method
+    public static boolean binarySearch(String[] arr, String key) {
 
-        for (String id : arr) {
-            if (id.equals(key)) {  // ✅ safe comparison
-                return true;       // early stop
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int result = arr[mid].compareTo(key);
+
+            if (result == 0) {
+                return true; // found
+            } else if (result < 0) {
+                low = mid + 1; // search right
+            } else {
+                high = mid - 1; // search left
             }
         }
-        return false;
-    }
 
-    // 🔹 Helper Method to Print Results
-    public static void testSearch(String label, String[] arr, String key) {
-        System.out.println("\n" + label);
-        System.out.println("Searching: " + key);
-        System.out.println("Result: " + linearSearch(arr, key));
+        return false; // not found
     }
 }
