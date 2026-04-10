@@ -10,8 +10,8 @@ class Bogie {
         this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
+    public int getCapacity() {
+        return capacity;
     }
 
     public String toString() {
@@ -31,19 +31,15 @@ public class TrainConsistManagementApp {
         bogies.add(new Bogie("Sleeper", 80));
         bogies.add(new Bogie("AC Chair", 75));
 
-        System.out.println("Original Bogies:");
+        System.out.println("Bogies:");
         bogies.forEach(System.out::println);
 
-        // UC9: Grouping by type
-        Map<String, List<Bogie>> groupedBogies = bogies
+        // UC10: Total Seat Calculation using reduce()
+        int totalSeats = bogies
                 .stream()
-                .collect(Collectors.groupingBy(Bogie::getType));
+                .map(b -> b.getCapacity())
+                .reduce(0, Integer::sum);
 
-        System.out.println("\nGrouped Bogies:");
-
-        groupedBogies.forEach((type, list) -> {
-            System.out.println("\n" + type + ":");
-            list.forEach(System.out::println);
-        });
+        System.out.println("\nTotal Seating Capacity: " + totalSeats);
     }
 }
