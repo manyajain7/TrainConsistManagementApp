@@ -4,33 +4,35 @@ public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        // 🔹 Test Case 1: Basic Alphabetical Sorting
-        String[] tc1 = {"Sleeper","AC Chair","First Class","General","Luxury"};
-        sortAndPrint("Test 1 - Basic", tc1);
+        // 🔹 Test Case Array
+        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
 
-        // 🔹 Test Case 2: Unsorted Input
-        String[] tc2 = {"Luxury","General","Sleeper","AC Chair"};
-        sortAndPrint("Test 2 - Unsorted", tc2);
+        // 🔹 Test Cases
+        testSearch("Test 1 - Found", bogieIds, "BG309");
+        testSearch("Test 2 - Not Found", bogieIds, "BG999");
+        testSearch("Test 3 - First Element", bogieIds, "BG101");
+        testSearch("Test 4 - Last Element", bogieIds, "BG550");
 
-        // 🔹 Test Case 3: Already Sorted
-        String[] tc3 = {"AC Chair","First Class","General"};
-        sortAndPrint("Test 3 - Already Sorted", tc3);
-
-        // 🔹 Test Case 4: Duplicate Names
-        String[] tc4 = {"Sleeper","AC Chair","Sleeper","General"};
-        sortAndPrint("Test 4 - Duplicates", tc4);
-
-        // 🔹 Test Case 5: Single Element
-        String[] tc5 = {"Sleeper"};
-        sortAndPrint("Test 5 - Single Element", tc5);
+        // 🔹 Single Element Case
+        String[] single = {"BG101"};
+        testSearch("Test 5 - Single Element", single, "BG101");
     }
 
-    // 🔥 Reusable method
-    public static void sortAndPrint(String label, String[] arr) {
-        System.out.println("\n" + label + " (Before): " + Arrays.toString(arr));
+    // 🔥 Linear Search Method
+    public static boolean linearSearch(String[] arr, String key) {
 
-        Arrays.sort(arr); // ✅ core logic
+        for (String id : arr) {
+            if (id.equals(key)) {  // ✅ safe comparison
+                return true;       // early stop
+            }
+        }
+        return false;
+    }
 
-        System.out.println(label + " (After):  " + Arrays.toString(arr));
+    // 🔹 Helper Method to Print Results
+    public static void testSearch(String label, String[] arr, String key) {
+        System.out.println("\n" + label);
+        System.out.println("Searching: " + key);
+        System.out.println("Result: " + linearSearch(arr, key));
     }
 }
